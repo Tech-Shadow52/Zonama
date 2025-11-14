@@ -5,6 +5,8 @@ class ECommerceApp {
         this.cart = [];
         this.products = [];
         this.currentStep = 1;
+        this.currentImageData = null;
+        this.imageUploadConfigured = false;
         
         this.init();
     }
@@ -1411,6 +1413,11 @@ class ECommerceApp {
             return;
         }
         this.showModal('addProductModal');
+        
+        // Setup image upload after modal is shown
+        setTimeout(() => {
+            this.setupImageUpload();
+        }, 100);
     }
 
     closeAddProduct() {
@@ -1641,6 +1648,10 @@ class ECommerceApp {
         const fileUploadArea = document.getElementById('fileUploadArea');
         
         if (!fileInput || !fileUploadArea) return;
+        
+        // Avoid adding multiple listeners
+        if (this.imageUploadConfigured) return;
+        this.imageUploadConfigured = true;
 
         // Handle file selection
         fileInput.addEventListener('change', (e) => {
@@ -1802,11 +1813,14 @@ window.showProductDetail = function(productId) {
 };
 
 // Initialize the application
-const app = new ECommerceApp();
-window.app = app; // Make app globally accessible
+let app;
 
 // Enhanced initialization
 document.addEventListener('DOMContentLoaded', function() {
+    // Create app instance after DOM is ready
+    app = new ECommerceApp();
+    window.app = app; // Make app globally accessible
+    
     // Initialize Salvador-specific features
     if (app) {
         app.initSalvadorFeatures();

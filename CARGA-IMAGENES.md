@@ -1,6 +1,13 @@
-# Sistema de Carga de Imágenes
+# Sistema de Carga de Imágenes - ACTUALIZADO
 
-## Funcionalidad Implementada
+## Cambios Realizados para Corregir Problemas
+
+### 1. Inicialización Mejorada
+- La app ahora se inicializa dentro de `DOMContentLoaded` para asegurar que todos los elementos HTML estén disponibles
+- `setupImageUpload()` se llama cuando se abre el modal de agregar producto
+- Se agregó una bandera `imageUploadConfigured` para evitar duplicar event listeners
+
+### 2. Funcionalidad Implementada
 
 Se ha agregado un sistema completo de carga de imágenes para productos con dos opciones:
 
