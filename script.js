@@ -16,6 +16,11 @@ class ECommerceApp {
         
         // Ensure all modals are hidden on page load
         this.hideAllModals();
+        
+        // Setup accessibility features
+        this.setupImageLightbox();
+        this.setupKeyboardNavigation();
+        this.lastFocusedElement = null;
     }
 
     hideAllModals() {
@@ -458,6 +463,15 @@ class ECommerceApp {
                 const modal = e.target.closest('.modal');
                 this.hideModal(modal.id);
             });
+            
+            // Keyboard accessibility for close button
+            closeBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const modal = e.target.closest('.modal');
+                    this.hideModal(modal.id);
+                }
+            });
         });
 
         // Close modal when clicking outside
@@ -467,20 +481,133 @@ class ECommerceApp {
                     this.hideModal(modal.id);
                 }
             });
+            
+            // Keyboard accessibility - ESC key to close
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    this.hideModal(modal.id);
+                }
+            });
         });
+        
+        // Setup image lightbox functionality
+        this.setupImageLightbox();
+    }
+    
+    setupImageLightbox() {
+        // Add click handler to product detail image
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'productDetailImage' && e.target.src) {
+                this.openLightbox(e.target.src, e.target.alt);
+            }
+        });
+        
+        // Keyboard accessibility for product detail image
+        document.addEventListener('keydown', (e) => {
+            const target = e.target;
+            if (target.id === 'productDetailImage' && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                if (target.src) {
+                    this.openLightbox(target.src, target.alt);
+                }
+            }
+        });
+        
+        // Close lightbox when clicking on image or outside
+        const lightbox = document.getElementById('imageLightbox');
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target.id === 'lightboxImage') {
+                    this.closeLightbox();
+                }
+            });
+        }
+    }
+    
+    openLightbox(imageSrc, imageAlt) {
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        
+        if (lightbox && lightboxImage) {
+            lightboxImage.src = imageSrc;
+            lightboxImage.alt = imageAlt || 'Imagen del producto';
+            lightboxCaption.textContent = imageAlt || 'Imagen del producto';
+            
+            this.showModal('imageLightbox');
+            
+            // Focus on the image for accessibility
+            setTimeout(() => {
+                lightboxImage.focus();
+            }, 100);
+        }
+    }
+    
+    closeLightbox() {
+        this.hideModal('imageLightbox');
+        // Return focus to the product detail image
+        const productImage = document.getElementById('productDetailImage');
+        if (productImage) {
+            productImage.focus();
+        }
     }
 
     showModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'block';
+            modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            
+            // Trap focus within modal
+            this.trapFocus(modal);
+            
+            // Store the element that opened the modal for focus return
+            this.lastFocusedElement = document.activeElement;
         }
     }
 
     hideModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-        document.body.style.overflow = 'auto';
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
+            
+            // Return focus to the element that opened the modal
+            if (this.lastFocusedElement) {
+                this.lastFocusedElement.focus();
+            }
+        }
+    }
+    
+    trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        element.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                }
+            }
+        });
+        
+        // Focus first element
+        if (firstFocusable) {
+            setTimeout(() => firstFocusable.focus(), 100);
+        }
     }
 
     switchAuthTab(tab) {
@@ -866,8 +993,13 @@ class ECommerceApp {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
+        notification.setAttribute('role', 'alert');
+        notification.setAttribute('aria-live', 'assertive');
         
         document.body.appendChild(notification);
+        
+        // Announce to screen readers
+        this.announceToScreenReader(message);
         
         setTimeout(() => {
             notification.remove();

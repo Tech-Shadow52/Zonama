@@ -18,8 +18,9 @@
             </div>
 
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Buscar productos...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
+                <label for="searchInput" class="sr-only">Buscar productos</label>
+                <input type="text" id="searchInput" placeholder="Buscar productos..." aria-label="Campo de búsqueda de productos">
+                <button id="searchBtn" aria-label="Buscar"><i class="fas fa-search" aria-hidden="true"></i></button>
             </div>
 
             <div class="header-actions">
@@ -101,9 +102,9 @@
         </section>
 
         <!-- Login/Register Modal -->
-        <div id="authModal" class="modal">
+        <div id="authModal" class="modal" role="dialog" aria-label="Iniciar sesión o registrarse" aria-modal="true">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="close" aria-label="Cerrar formulario">&times;</span>
                 <div class="auth-container">
                     <div class="auth-tabs">
                         <button class="tab-btn active" data-tab="login">Iniciar Sesión</button>
@@ -152,9 +153,9 @@
         </div>
 
         <!-- Seller Modal -->
-        <div id="sellerModal" class="modal">
+        <div id="sellerModal" class="modal" role="dialog" aria-label="Planes para vendedores" aria-modal="true">
             <div class="modal-content seller-modal">
-                <span class="close">&times;</span>
+                <span class="close" aria-label="Cerrar planes">&times;</span>
                 <div class="seller-container">
                     <h2>Vende en Zonama</h2>
                     <p class="seller-subtitle">Únete a cientos de vendedores locales y haz crecer tu negocio</p>
@@ -282,9 +283,9 @@
         </section>
 
         <!-- Shopping Cart -->
-        <div id="cartModal" class="modal">
+        <div id="cartModal" class="modal" role="dialog" aria-label="Carrito de compras" aria-modal="true">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="close" aria-label="Cerrar carrito">&times;</span>
                 <div class="cart-container">
                     <h2>Carrito de Compras</h2>
                     <div id="cartItems" class="cart-items">
@@ -298,13 +299,22 @@
             </div>
         </div>
 
+        <!-- Image Lightbox Modal -->
+        <div id="imageLightbox" class="modal lightbox-modal" role="dialog" aria-label="Vista ampliada de imagen" aria-modal="true">
+            <div class="lightbox-content">
+                <span class="close" aria-label="Cerrar vista ampliada">&times;</span>
+                <img id="lightboxImage" src="" alt="" tabindex="0">
+                <div class="lightbox-caption" id="lightboxCaption"></div>
+            </div>
+        </div>
+
         <!-- Product Detail Modal -->
-        <div id="productModal" class="modal">
+        <div id="productModal" class="modal" role="dialog" aria-label="Detalles del producto" aria-modal="true">
             <div class="modal-content product-detail-modal">
-                <span class="close">&times;</span>
+                <span class="close" aria-label="Cerrar detalles del producto">&times;</span>
                 <div class="product-detail-container">
                     <div class="product-detail-image">
-                        <img id="productDetailImage" src="" alt="">
+                        <img id="productDetailImage" src="" alt="" role="button" tabindex="0" aria-label="Haz clic para ver imagen completa">
                     </div>
                     <div class="product-detail-info">
                         <h2 id="productDetailTitle"></h2>
@@ -335,9 +345,9 @@
         </div>
 
         <!-- Checkout Modal -->
-        <div id="checkoutModal" class="modal">
+        <div id="checkoutModal" class="modal" role="dialog" aria-label="Proceso de pago" aria-modal="true">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="close" aria-label="Cerrar proceso de pago">&times;</span>
                 <div class="checkout-container">
                     <h2>Finalizar Compra</h2>
                     <div class="checkout-steps">

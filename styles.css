@@ -2028,3 +2028,262 @@ specific product styling */
     color: white;
     transform: scale(1.1);
 }
+/*
+ Lightbox Modal for Full Image View */
+.lightbox-modal {
+    z-index: 3000;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.lightbox-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.lightbox-content img {
+    max-width: 90%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 50px rgba(156, 39, 176, 0.5);
+    animation: zoomIn 0.3s ease;
+    cursor: zoom-out;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.lightbox-caption {
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    max-width: 80%;
+}
+
+.lightbox-modal .close {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    background: rgba(156, 39, 176, 0.8);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 3001;
+}
+
+.lightbox-modal .close:hover {
+    background: #9c27b0;
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Accessibility - Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Enhanced Focus Styles for Accessibility */
+*:focus {
+    outline: 2px solid #9c27b0;
+    outline-offset: 2px;
+}
+
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #9c27b0;
+    outline-offset: 2px;
+}
+
+/* Skip to main content link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #9c27b0;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Enhanced clickable image cursor */
+.product-detail-image img {
+    cursor: zoom-in;
+}
+
+.product-detail-image img:hover {
+    opacity: 0.9;
+    box-shadow: 0 10px 30px rgba(156, 39, 176, 0.4);
+}
+
+/* Keyboard navigation indicators */
+.modal:focus-within {
+    outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .btn-primary,
+    .btn-secondary,
+    .add-to-cart {
+        border: 2px solid currentColor;
+    }
+    
+    .product-card {
+        border: 2px solid rgba(156, 39, 176, 0.5);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mobile lightbox adjustments */
+@media (max-width: 768px) {
+    .lightbox-content {
+        padding: 1rem;
+    }
+    
+    .lightbox-content img {
+        max-width: 95%;
+        max-height: 80vh;
+    }
+    
+    .lightbox-modal .close {
+        top: 10px;
+        right: 10px;
+        width: 45px;
+        height: 45px;
+        font-size: 35px;
+    }
+    
+    .lightbox-caption {
+        font-size: 1rem;
+        margin-top: 1rem;
+        max-width: 90%;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .product-image img:hover,
+    .product-detail-image img:hover {
+        transform: none;
+        opacity: 1;
+    }
+    
+    .lightbox-content img {
+        cursor: default;
+    }
+}
+
+/* Enhanced ARIA live regions */
+[aria-live="polite"],
+[aria-live="assertive"] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Color contrast improvements */
+.product-author,
+.product-brand {
+    color: #e0e0e0;
+}
+
+.product-detail-author {
+    color: #555;
+}
+
+/* Enhanced button states */
+button:disabled,
+button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button:not(:disabled):active {
+    transform: scale(0.98);
+}
+
+/* Improved form labels */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Enhanced error states */
+input:invalid:not(:placeholder-shown) {
+    border-color: #f44336;
+}
+
+input:valid:not(:placeholder-shown) {
+    border-color: #4caf50;
+}
+
+/* Loading state accessibility */
+.loading::after {
+    content: "Cargando...";
+    position: absolute;
+    left: -10000px;
+}
+
+/* Enhanced modal backdrop */
+.modal[aria-hidden="true"] {
+    display: none;
+}
+
+.modal[aria-hidden="false"] {
+    display: block;
+}
