@@ -21,6 +21,10 @@ class ECommerceApp {
         this.setupImageLightbox();
         this.setupKeyboardNavigation();
         this.lastFocusedElement = null;
+        
+        // Setup image upload functionality
+        this.currentImageData = null;
+        this.setupImageUpload();
     }
 
     hideAllModals() {
@@ -724,7 +728,7 @@ class ECommerceApp {
                     ${product.author ? `<p class="product-author">by ${product.author}</p>` : ''}
                     ${product.brand ? `<p class="product-brand">${product.brand}</p>` : ''}
                     ${product.seller ? `<p class="product-seller">Vendido por: ${product.seller}</p>` : ''}
-                    ${product.location ? `<p class="product-location"><i class="fas fa-map-marker-alt"></i> ${product.location}</p>` : ''}
+                    ${product.location && product.type === 'physical' ? `<p class="product-location"><i class="fas fa-map-marker-alt"></i> ${product.location}</p>` : ''}
                     <div class="product-rating">
                         <div class="stars">${this.generateStars(product.rating)}</div>
                         <span>${product.rating}</span>
@@ -1031,6 +1035,32 @@ class ECommerceApp {
             document.getElementById('productDetailRating').textContent = `${product.rating} de 5 estrellas`;
             document.getElementById('productDetailPrice').textContent = `$${product.price}`;
             
+            // Show/hide shipping info based on product type
+            const priceShippingInfo = document.getElementById('priceShippingInfo');
+            const deliveryInfo = document.getElementById('deliveryInfo');
+            const digitalDeliveryInfo = document.getElementById('digitalDeliveryInfo');
+            const shipFromLine = document.getElementById('shipFromLine');
+            const returnPolicy = document.getElementById('returnPolicy');
+            const digitalPolicy = document.getElementById('digitalPolicy');
+            
+            if (product.type === 'digital') {
+                // Hide physical shipping info
+                if (priceShippingInfo) priceShippingInfo.style.display = 'none';
+                if (deliveryInfo) deliveryInfo.style.display = 'none';
+                if (digitalDeliveryInfo) digitalDeliveryInfo.style.display = 'block';
+                if (shipFromLine) shipFromLine.style.display = 'none';
+                if (returnPolicy) returnPolicy.style.display = 'none';
+                if (digitalPolicy) digitalPolicy.style.display = 'block';
+            } else {
+                // Show physical shipping info
+                if (priceShippingInfo) priceShippingInfo.style.display = 'block';
+                if (deliveryInfo) deliveryInfo.style.display = 'block';
+                if (digitalDeliveryInfo) digitalDeliveryInfo.style.display = 'none';
+                if (shipFromLine) shipFromLine.style.display = 'flex';
+                if (returnPolicy) returnPolicy.style.display = 'flex';
+                if (digitalPolicy) digitalPolicy.style.display = 'none';
+            }
+            
             // Handle different product types with better localization
             if (product.category === 'books') {
                 document.getElementById('productDetailPages').textContent = `${product.pages} páginas`;
@@ -1059,10 +1089,14 @@ class ECommerceApp {
                 document.getElementById('productDetailType').textContent = product.type === 'physical' ? 'Producto Físico' : 'Producto Digital';
             }
             
-            // Add location if available
+            // Add location if available (only for physical products)
             const locationElement = document.getElementById('productDetailLocation');
             if (locationElement) {
-                locationElement.textContent = product.location || 'El Salvador';
+                if (product.type === 'physical') {
+                    locationElement.textContent = product.location || 'El Salvador';
+                } else {
+                    locationElement.textContent = 'Digital - Sin ubicación física';
+                }
             }
             
             document.getElementById('productDetailDescription').textContent = product.description;
@@ -1246,6 +1280,7 @@ class ECommerceApp {
     initSellerSystem() {
         this.currentSeller = null;
         this.sellerProducts = [];
+        this.editingProductId = null;
         
         // Load seller data from localStorage
         const savedSeller = localStorage.getItem('zonama_seller');
@@ -1381,50 +1416,146 @@ class ECommerceApp {
     closeAddProduct() {
         this.hideModal('addProductModal');
         document.getElementById('addProductForm').reset();
+        
+        // Reset editing mode
+        this.editingProductId = null;
+        
+        // Reset form title and button text
+        document.querySelector('.add-product-container h2').textContent = 'Agregar Nuevo Producto';
+        document.querySelector('.btn-submit-product').textContent = 'Publicar Producto';
+        
+        // Clear image data and previews
+        this.currentImageData = null;
+        this.removeImage();
+        
+        // Clear URL preview
+        const urlPreview = document.getElementById('urlImagePreview');
+        const urlInput = document.getElementById('productImageUrl');
+        if (urlPreview) urlPreview.style.display = 'none';
+        if (urlInput) urlInput.value = '';
+        
+        // Reset to file upload tab
+        this.switchImageTab('file');
     }
 
     handleAddProduct() {
-        const newProduct = {
-            id: Date.now(),
-            title: document.getElementById('productTitle').value,
-            price: parseFloat(document.getElementById('productPrice').value),
-            category: document.getElementById('productCategory').value,
-            type: document.getElementById('productType').value,
-            stock: parseInt(document.getElementById('productStock').value),
-            description: document.getElementById('productDescription').value,
-            image: document.getElementById('productImage').value,
-            specs: document.getElementById('productSpecs').value || 'Ver descripción',
-            seller: this.currentSeller.storeName,
-            location: this.getDepartmentName(this.currentSeller.department),
-            brand: this.currentSeller.storeName,
-            available: true,
-            rating: 5.0,
-            createdAt: new Date().toISOString()
-        };
-
-        // Add to seller products
-        this.sellerProducts.push(newProduct);
+        // Get image data from either file upload or URL
+        const imageData = this.getProductImageData();
         
-        // Add to main products array
-        this.products.push(newProduct);
+        if (!imageData) {
+            // Error message already shown in getProductImageData()
+            return;
+        }
 
-        // Save to localStorage
-        localStorage.setItem('zonama_seller_products', JSON.stringify(this.sellerProducts));
+        // Check if we're editing or adding
+        if (this.editingProductId) {
+            // EDIT MODE
+            const productData = {
+                title: document.getElementById('productTitle').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                type: document.getElementById('productType').value,
+                stock: parseInt(document.getElementById('productStock').value),
+                description: document.getElementById('productDescription').value,
+                image: imageData,
+                specs: document.getElementById('productSpecs').value || 'Ver descripción'
+            };
 
-        // Show success message
-        this.showNotification('Producto agregado exitosamente', 'success');
+            // Update in seller products
+            const sellerIndex = this.sellerProducts.findIndex(p => p.id === this.editingProductId);
+            if (sellerIndex !== -1) {
+                this.sellerProducts[sellerIndex] = {
+                    ...this.sellerProducts[sellerIndex],
+                    ...productData
+                };
+            }
 
-        // Close modal and refresh dashboard
+            // Update in main products
+            const mainIndex = this.products.findIndex(p => p.id === this.editingProductId);
+            if (mainIndex !== -1) {
+                this.products[mainIndex] = {
+                    ...this.products[mainIndex],
+                    ...productData
+                };
+            }
+
+            // Save to localStorage
+            localStorage.setItem('zonama_seller_products', JSON.stringify(this.sellerProducts));
+
+            // Show success message
+            this.showNotification('Producto actualizado exitosamente', 'success');
+
+            // Reset editing mode
+            this.editingProductId = null;
+        } else {
+            // ADD MODE
+            const newProduct = {
+                id: Date.now(),
+                title: document.getElementById('productTitle').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                type: document.getElementById('productType').value,
+                stock: parseInt(document.getElementById('productStock').value),
+                description: document.getElementById('productDescription').value,
+                image: imageData,
+                specs: document.getElementById('productSpecs').value || 'Ver descripción',
+                seller: this.currentSeller.storeName,
+                location: this.getDepartmentName(this.currentSeller.department),
+                brand: this.currentSeller.storeName,
+                available: true,
+                rating: 5.0,
+                createdAt: new Date().toISOString()
+            };
+
+            // Add to seller products
+            this.sellerProducts.push(newProduct);
+            
+            // Add to main products array
+            this.products.push(newProduct);
+
+            // Save to localStorage
+            localStorage.setItem('zonama_seller_products', JSON.stringify(this.sellerProducts));
+
+            // Show success message
+            this.showNotification('Producto agregado exitosamente', 'success');
+
+            // Update stats
+            document.getElementById('totalProducts').textContent = this.sellerProducts.length;
+        }
+
+        // Close modal and refresh displays
         this.closeAddProduct();
         this.displaySellerProducts();
         this.displayProducts(); // Refresh main products display
-
-        // Update stats
-        document.getElementById('totalProducts').textContent = this.sellerProducts.length;
     }
 
     editProduct(productId) {
-        this.showNotification('Función de edición en desarrollo', 'warning');
+        // Find the product
+        const product = this.sellerProducts.find(p => p.id === productId);
+        if (!product) {
+            this.showNotification('Producto no encontrado', 'error');
+            return;
+        }
+
+        // Store the product being edited
+        this.editingProductId = productId;
+
+        // Fill the form with current product data
+        document.getElementById('productTitle').value = product.title;
+        document.getElementById('productPrice').value = product.price;
+        document.getElementById('productCategory').value = product.category;
+        document.getElementById('productType').value = product.type;
+        document.getElementById('productStock').value = product.stock;
+        document.getElementById('productDescription').value = product.description;
+        document.getElementById('productImage').value = product.image;
+        document.getElementById('productSpecs').value = product.specs || '';
+
+        // Change form title and button text
+        document.querySelector('.add-product-container h2').textContent = 'Editar Producto';
+        document.querySelector('.btn-submit-product').textContent = 'Guardar Cambios';
+
+        // Open the modal
+        this.showModal('addProductModal');
     }
 
     deleteProduct(productId) {
@@ -1482,6 +1613,184 @@ class ECommerceApp {
             'san-vicente': 'San Vicente'
         };
         return departments[code] || 'El Salvador';
+    }
+
+    // ===== IMAGE UPLOAD FUNCTIONS =====
+    
+    switchImageTab(tab) {
+        // Update tab buttons
+        document.querySelectorAll('.upload-tab').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.upload-tab[data-tab="${tab}"]`).classList.add('active');
+
+        // Update tab content
+        document.querySelectorAll('.upload-tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        if (tab === 'file') {
+            document.getElementById('fileUploadTab').classList.add('active');
+        } else {
+            document.getElementById('urlUploadTab').classList.add('active');
+        }
+    }
+
+    setupImageUpload() {
+        const fileInput = document.getElementById('productImageFile');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        
+        if (!fileInput || !fileUploadArea) return;
+
+        // Handle file selection
+        fileInput.addEventListener('change', (e) => {
+            this.handleFileSelect(e.target.files[0]);
+        });
+
+        // Handle drag and drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('drag-over');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('drag-over');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('drag-over');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                this.handleFileSelect(file);
+            } else {
+                this.showNotification('Por favor selecciona un archivo de imagen válido', 'error');
+            }
+        });
+    }
+
+    handleFileSelect(file) {
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            this.showNotification('Por favor selecciona un archivo de imagen', 'error');
+            return;
+        }
+
+        // Validate file size (5MB max)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+            this.showNotification('La imagen es muy grande. Máximo 5MB', 'error');
+            return;
+        }
+
+        // Read and preview the file
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imageData = e.target.result;
+            this.currentImageData = imageData;
+            this.showImagePreview(imageData);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    showImagePreview(imageData) {
+        const preview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const placeholder = document.querySelector('.upload-placeholder');
+
+        if (preview && previewImg && placeholder) {
+            previewImg.src = imageData;
+            placeholder.style.display = 'none';
+            preview.style.display = 'block';
+        }
+    }
+
+    removeImage() {
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.querySelector('.upload-placeholder');
+        const fileInput = document.getElementById('productImageFile');
+
+        if (preview && placeholder && fileInput) {
+            preview.style.display = 'none';
+            placeholder.style.display = 'flex';
+            fileInput.value = '';
+            this.currentImageData = null;
+        }
+    }
+
+    previewUrlImage() {
+        const urlInput = document.getElementById('productImageUrl');
+        const urlPreview = document.getElementById('urlImagePreview');
+        const urlPreviewImg = document.getElementById('urlPreviewImg');
+
+        if (!urlInput || !urlPreview || !urlPreviewImg) return;
+
+        const imageUrl = urlInput.value.trim();
+        
+        if (!imageUrl) {
+            this.showNotification('Por favor ingresa una URL', 'warning');
+            return;
+        }
+
+        // Validate URL format
+        try {
+            new URL(imageUrl);
+        } catch (e) {
+            this.showNotification('URL inválida', 'error');
+            return;
+        }
+
+        // Try to load the image
+        urlPreviewImg.onload = () => {
+            urlPreview.style.display = 'block';
+            this.showNotification('Vista previa cargada', 'success');
+        };
+
+        urlPreviewImg.onerror = () => {
+            urlPreview.style.display = 'none';
+            this.showNotification('No se pudo cargar la imagen desde esta URL', 'error');
+        };
+
+        urlPreviewImg.src = imageUrl;
+    }
+
+    getProductImageData() {
+        // Check which tab is active
+        const fileTab = document.getElementById('fileUploadTab');
+        const urlTab = document.getElementById('urlUploadTab');
+
+        if (fileTab && fileTab.classList.contains('active')) {
+            // File upload is active
+            if (this.currentImageData) {
+                return this.currentImageData;
+            } else {
+                this.showNotification('Por favor selecciona una imagen', 'warning');
+                return null;
+            }
+        } else if (urlTab && urlTab.classList.contains('active')) {
+            // URL input is active
+            const urlInput = document.getElementById('productImageUrl');
+            const imageUrl = urlInput ? urlInput.value.trim() : '';
+            
+            if (!imageUrl) {
+                this.showNotification('Por favor ingresa una URL de imagen', 'warning');
+                return null;
+            }
+
+            // Validate URL
+            try {
+                new URL(imageUrl);
+                return imageUrl;
+            } catch (e) {
+                this.showNotification('URL inválida', 'error');
+                return null;
+            }
+        }
+
+        return null;
     }
 }
 

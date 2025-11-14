@@ -534,9 +534,51 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="productImage">URL de la imagen *</label>
-                            <input type="url" id="productImage" required placeholder="https://ejemplo.com/imagen.jpg">
-                            <small>Ingresa la URL de una imagen de tu producto</small>
+                            <label for="productImage">Imagen del producto *</label>
+                            
+                            <div class="image-upload-options">
+                                <div class="upload-tabs">
+                                    <button type="button" class="upload-tab active" data-tab="file" onclick="app.switchImageTab('file')">
+                                        <i class="fas fa-upload"></i> Subir archivo
+                                    </button>
+                                    <button type="button" class="upload-tab" data-tab="url" onclick="app.switchImageTab('url')">
+                                        <i class="fas fa-link"></i> URL de imagen
+                                    </button>
+                                </div>
+
+                                <div class="upload-content">
+                                    <!-- File Upload -->
+                                    <div id="fileUploadTab" class="upload-tab-content active">
+                                        <div class="file-upload-area" id="fileUploadArea">
+                                            <input type="file" id="productImageFile" accept="image/*" style="display: none;">
+                                            <div class="upload-placeholder" onclick="document.getElementById('productImageFile').click()">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <p>Haz clic para seleccionar una imagen</p>
+                                                <small>o arrastra y suelta aquí</small>
+                                                <small class="file-info">JPG, PNG, GIF (máx. 5MB)</small>
+                                            </div>
+                                            <div id="imagePreview" class="image-preview" style="display: none;">
+                                                <img id="previewImg" src="" alt="Vista previa">
+                                                <button type="button" class="btn-remove-image" onclick="app.removeImage()">
+                                                    <i class="fas fa-times"></i> Cambiar imagen
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- URL Input -->
+                                    <div id="urlUploadTab" class="upload-tab-content">
+                                        <input type="url" id="productImageUrl" placeholder="https://ejemplo.com/imagen.jpg">
+                                        <small>Ingresa la URL de una imagen de tu producto</small>
+                                        <button type="button" class="btn-preview-url" onclick="app.previewUrlImage()">
+                                            <i class="fas fa-eye"></i> Vista previa
+                                        </button>
+                                        <div id="urlImagePreview" class="image-preview" style="display: none;">
+                                            <img id="urlPreviewImg" src="" alt="Vista previa">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -691,7 +733,7 @@
                         <div class="product-price-box">
                             <div class="price-label">Precio:</div>
                             <div id="productDetailPrice" class="price-main"></div>
-                            <div class="price-shipping">Envío GRATIS en pedidos mayores a $25</div>
+                            <div id="priceShippingInfo" class="price-shipping">Envío GRATIS en pedidos mayores a $25</div>
                         </div>
 
                         <div class="divider"></div>
@@ -741,7 +783,7 @@
                                 <i class="fas fa-check-circle"></i> En stock
                             </div>
 
-                            <div class="delivery-info">
+                            <div id="deliveryInfo" class="delivery-info">
                                 <div class="delivery-line">
                                     <i class="fas fa-truck"></i>
                                     <div>
@@ -754,6 +796,16 @@
                                     <div>
                                         <span>Enviar a</span>
                                         <strong id="deliveryLocation">San Salvador</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="digitalDeliveryInfo" class="delivery-info" style="display: none;">
+                                <div class="delivery-line">
+                                    <i class="fas fa-download"></i>
+                                    <div>
+                                        <strong>Entrega Digital Inmediata</strong>
+                                        <div class="delivery-date">Disponible después del pago</div>
                                     </div>
                                 </div>
                             </div>
@@ -791,14 +843,18 @@
                                     <span>Vendido por:</span>
                                     <strong id="sellerName">Zonama</strong>
                                 </div>
-                                <div class="seller-line">
+                                <div id="shipFromLine" class="seller-line">
                                     <span>Envío desde:</span>
                                     <strong id="shipFrom">El Salvador</strong>
                                 </div>
                             </div>
 
-                            <div class="return-policy">
+                            <div id="returnPolicy" class="return-policy">
                                 <i class="fas fa-undo"></i> Devoluciones gratuitas en 30 días
+                            </div>
+                            
+                            <div id="digitalPolicy" class="return-policy" style="display: none;">
+                                <i class="fas fa-shield-alt"></i> Compra protegida - Acceso inmediato
                             </div>
                         </div>
                     </div>

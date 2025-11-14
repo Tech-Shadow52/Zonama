@@ -62,8 +62,8 @@
 **Funciones Disponibles:**
 - ✅ Ver lista de productos
 - ✅ Agregar nuevos productos
+- ✅ Editar productos
 - ✅ Eliminar productos
-- ⏳ Editar productos (próximamente)
 
 **Características:**
 - Los productos se guardan en localStorage
@@ -185,7 +185,7 @@
 ## 🚀 Próximas Mejoras
 
 ### Corto Plazo
-- [ ] Editar productos existentes
+- [x] Editar productos existentes ✅
 - [ ] Subir imágenes directamente
 - [ ] Vista previa de productos
 - [ ] Filtrar productos por vendedor
