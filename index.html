@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zonama - Marketplace de El Salvador</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-gem"></i> Zonama</h1>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="header-actions">
+                <button id="sellerBtn" class="btn-secondary">Vender en Zonama</button>
+                <button id="loginBtn" class="btn-primary">Iniciar Sesión</button>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Conectando El Salvador</h1>
+                    <p>El marketplace que une a vendedores locales con compradores en todo el país</p>
+                    <div class="hero-buttons">
+                        <button class="btn-hero-primary" onclick="document.querySelector('.products').scrollIntoView({behavior: 'smooth'})">
+                            <i class="fas fa-shopping-bag"></i> Explorar Productos
+                        </button>
+                        <button class="btn-hero-secondary" id="heroSellerBtn">
+                            <i class="fas fa-store"></i> Vender en Zonama
+                        </button>
+
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-number">10,000+</span>
+                            <span class="stat-label">Compradores</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-store"></i>
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Vendedores</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-box"></i>
+                            <span class="stat-number">5,000+</span>
+                            <span class="stat-label">Productos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="container">
+                <h2>¿Por qué elegir Zonama?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Envíos a Todo El Salvador</h3>
+                        <p>Alianzas con empresas de logística para entregas rápidas y económicas</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Compra Segura</h3>
+                        <p>Protección en cada transacción para compradores y vendedores</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h3>Precios Justos</h3>
+                        <p>Comisiones bajas para que vendedores locales crezcan</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-headset"></i>
+                        <h3>Soporte Local</h3>
+                        <p>Atención al cliente en español, siempre disponible</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login/Register Modal -->
+        <div id="authModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="auth-container">
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" data-tab="login">Iniciar Sesión</button>
+                        <button class="tab-btn" data-tab="register">Crear Cuenta</button>
+                    </div>
+
+                    <div id="loginForm" class="auth-form active">
+                        <h2>Iniciar Sesión</h2>
+                        <form>
+                            <input type="email" placeholder="Email" required>
+                            <input type="password" placeholder="Contraseña" required>
+                            <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                        </form>
+                    </div>
+
+                    <div id="registerForm" class="auth-form">
+                        <h2>Crear Cuenta</h2>
+                        <form>
+                            <input type="text" placeholder="Nombre completo" required>
+                            <input type="email" placeholder="Email" required>
+                            <input type="tel" placeholder="Teléfono (opcional)">
+                            <select required>
+                                <option value="">Departamento</option>
+                                <option value="san-salvador">San Salvador</option>
+                                <option value="la-libertad">La Libertad</option>
+                                <option value="santa-ana">Santa Ana</option>
+                                <option value="san-miguel">San Miguel</option>
+                                <option value="usulutan">Usulután</option>
+                                <option value="la-paz">La Paz</option>
+                                <option value="sonsonate">Sonsonate</option>
+                                <option value="chalatenango">Chalatenango</option>
+                                <option value="la-union">La Unión</option>
+                                <option value="ahuachapan">Ahuachapán</option>
+                                <option value="cabanas">Cabañas</option>
+                                <option value="cuscatlan">Cuscatlán</option>
+                                <option value="morazan">Morazán</option>
+                                <option value="san-vicente">San Vicente</option>
+                            </select>
+                            <input type="password" placeholder="Contraseña" required>
+                            <input type="password" placeholder="Confirmar contraseña" required>
+                            <button type="submit" class="btn-primary">Crear Cuenta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seller Modal -->
+        <div id="sellerModal" class="modal">
+            <div class="modal-content seller-modal">
+                <span class="close">&times;</span>
+                <div class="seller-container">
+                    <h2>Vende en Zonama</h2>
+                    <p class="seller-subtitle">Únete a cientos de vendedores locales y haz crecer tu negocio</p>
+                    
+                    <div class="seller-plans">
+                        <div class="plan-card">
+                            <div class="plan-badge">Gratis</div>
+                            <h3>Plan Básico</h3>
+                            <div class="plan-price">$0<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Hasta 10 productos</li>
+                                <li><i class="fas fa-check"></i> Comisión del 8% por venta</li>
+                                <li><i class="fas fa-check"></i> Soporte por email</li>
+                                <li><i class="fas fa-check"></i> Panel básico de ventas</li>
+                            </ul>
+                            <button class="btn-plan">Comenzar Gratis</button>
+                        </div>
+
+                        <div class="plan-card featured">
+                            <div class="plan-badge popular">Más Popular</div>
+                            <h3>Plan Profesional</h3>
+                            <div class="plan-price">$15<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Productos ilimitados</li>
+                                <li><i class="fas fa-check"></i> Comisión del 5% por venta</li>
+                                <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                                <li><i class="fas fa-check"></i> Análisis avanzados</li>
+                                <li><i class="fas fa-check"></i> Destacado en búsquedas</li>
+                                <li><i class="fas fa-check"></i> Promociones especiales</li>
+                            </ul>
+                            <button class="btn-plan primary">Elegir Plan</button>
+                        </div>
+
+                        <div class="plan-card">
+                            <div class="plan-badge">Premium</div>
+                            <h3>Plan Empresarial</h3>
+                            <div class="plan-price">$40<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Todo del Plan Profesional</li>
+                                <li><i class="fas fa-check"></i> Comisión del 3% por venta</li>
+                                <li><i class="fas fa-check"></i> Gerente de cuenta dedicado</li>
+                                <li><i class="fas fa-check"></i> Publicidad destacada</li>
+                                <li><i class="fas fa-check"></i> API personalizada</li>
+                                <li><i class="fas fa-check"></i> Reportes personalizados</li>
+                            </ul>
+                            <button class="btn-plan">Contactar Ventas</button>
+                        </div>
+                    </div>
+
+                    <div class="seller-benefits">
+                        <h3>Beneficios de vender en Zonama</h3>
+                        <div class="seller-benefits-grid">
+                            <div class="seller-benefit">
+                                <i class="fas fa-chart-line"></i>
+                                <p>Aumenta tus ventas con nuestra audiencia creciente</p>
+                            </div>
+                            <div class="seller-benefit">
+                                <i class="fas fa-truck"></i>
+                                <p>Logística simplificada con nuestros socios de envío</p>
+                            </div>
+                            <div class="seller-benefit">
+                                <i class="fas fa-mobile-alt"></i>
+                                <p>Gestiona tu tienda desde cualquier dispositivo</p>
+                            </div>
+                            <div class="seller-benefit">
+                                <i class="fas fa-dollar-sign"></i>
+                                <p>Pagos seguros y rápidos directamente a tu cuenta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Categories -->
+        <section class="categories">
+            <div class="container">
+                <h2>Categorías</h2>
+                <div class="category-grid">
+                    <div class="category-card" data-category="food">
+                        <i class="fas fa-coffee"></i>
+                        <h3>Comida Local</h3>
+                    </div>
+                    <div class="category-card" data-category="crafts">
+                        <i class="fas fa-palette"></i>
+                        <h3>Artesanías</h3>
+                    </div>
+                    <div class="category-card" data-category="clothing">
+                        <i class="fas fa-tshirt"></i>
+                        <h3>Ropa</h3>
+                    </div>
+                    <div class="category-card" data-category="electronics">
+                        <i class="fas fa-laptop"></i>
+                        <h3>Electrónicos</h3>
+                    </div>
+                    <div class="category-card" data-category="home">
+                        <i class="fas fa-home"></i>
+                        <h3>Hogar</h3>
+                    </div>
+                    <div class="category-card" data-category="books">
+                        <i class="fas fa-book"></i>
+                        <h3>Libros</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products">
+            <div class="container">
+                <div class="products-header">
+                    <h2>Productos</h2>
+                    <div class="filter-controls">
+                        <select id="productType">
+                            <option value="all">Todos los productos</option>
+                            <option value="physical">Productos físicos</option>
+                            <option value="digital">Productos digitales</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="productsGrid" class="products-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Shopping Cart -->
+        <div id="cartModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="cart-container">
+                    <h2>Carrito de Compras</h2>
+                    <div id="cartItems" class="cart-items">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    <div class="cart-total">
+                        <h3>Total: $<span id="cartTotal">0.00</span></h3>
+                        <button id="checkoutBtn" class="btn-primary">Proceder al Pago</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Detail Modal -->
+        <div id="productModal" class="modal">
+            <div class="modal-content product-detail-modal">
+                <span class="close">&times;</span>
+                <div class="product-detail-container">
+                    <div class="product-detail-image">
+                        <img id="productDetailImage" src="" alt="">
+                    </div>
+                    <div class="product-detail-info">
+                        <h2 id="productDetailTitle"></h2>
+                        <p class="product-detail-author">by <span id="productDetailAuthor"></span></p>
+                        <div class="product-detail-rating">
+                            <div class="stars" id="productDetailStars"></div>
+                            <span id="productDetailRating"></span>
+                        </div>
+                        <div class="product-detail-price" id="productDetailPrice"></div>
+                        <div class="product-detail-meta">
+                            <p><strong>Especificaciones:</strong> <span id="productDetailPages"></span></p>
+                            <p><strong>Marca/Editorial:</strong> <span id="productDetailPublisher"></span></p>
+                            <p><strong>Categoría:</strong> <span id="productDetailGenre"></span></p>
+                            <p><strong>Vendedor:</strong> <span id="productDetailISBN"></span></p>
+                            <p><strong>Tipo:</strong> <span id="productDetailType"></span></p>
+                            <p><strong>Ubicación:</strong> <span id="productDetailLocation"></span></p>
+                        </div>
+                        <div class="product-detail-description">
+                            <h3>Descripción</h3>
+                            <p id="productDetailDescription"></p>
+                        </div>
+                        <div class="product-detail-actions">
+                            <button id="productDetailAddToCart" class="btn-primary">Agregar al Carrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="checkout-container">
+                    <h2>Finalizar Compra</h2>
+                    <div class="checkout-steps">
+                        <div class="step active" data-step="1">
+                            <h3>1. Dirección de Entrega</h3>
+                            <form id="addressForm">
+                                <select required>
+                                    <option value="">Departamento</option>
+                                    <option value="san-salvador">San Salvador</option>
+                                    <option value="la-libertad">La Libertad</option>
+                                    <option value="santa-ana">Santa Ana</option>
+                                    <option value="san-miguel">San Miguel</option>
+                                    <option value="usulutan">Usulután</option>
+                                    <option value="la-paz">La Paz</option>
+                                    <option value="sonsonate">Sonsonate</option>
+                                    <option value="chalatenango">Chalatenango</option>
+                                    <option value="la-union">La Unión</option>
+                                    <option value="ahuachapan">Ahuachapán</option>
+                                    <option value="cabanas">Cabañas</option>
+                                    <option value="cuscatlan">Cuscatlán</option>
+                                    <option value="morazan">Morazán</option>
+                                    <option value="san-vicente">San Vicente</option>
+                                </select>
+                                <input type="text" placeholder="Municipio" required>
+                                <input type="text" placeholder="Dirección completa" required>
+                                <input type="tel" placeholder="Teléfono de contacto" required>
+                                <button type="button" class="btn-primary next-step">Continuar</button>
+                            </form>
+                        </div>
+
+                        <div class="step" data-step="2">
+                            <h3>2. Método de Pago</h3>
+                            <div class="payment-methods">
+                                <label>
+                                    <input type="radio" name="payment" value="card" checked>
+                                    <i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment" value="tigo-money">
+                                    <i class="fas fa-mobile-alt"></i> Tigo Money
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment" value="chivo-wallet">
+                                    <i class="fab fa-bitcoin"></i> Chivo Wallet (Bitcoin)
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment" value="cash">
+                                    <i class="fas fa-money-bill-wave"></i> Pago Contra Entrega
+                                </label>
+                            </div>
+                            <div id="cardForm" class="payment-form">
+                                <input type="text" placeholder="Número de tarjeta" required>
+                                <input type="text" placeholder="MM/AA" required>
+                                <input type="text" placeholder="CVV" required>
+                            </div>
+                            <button type="button" class="btn-primary" id="processPayment">Procesar Pago</button>
+                        </div>
+
+                        <div class="step" data-step="3">
+                            <h3>3. Confirmación</h3>
+                            <div id="orderConfirmation">
+                                <!-- Order confirmation will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-gem"></i> Zonama</h3>
+                    <p>El marketplace que conecta a El Salvador</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Para Compradores</h4>
+                    <ul>
+                        <li><a href="#">Cómo comprar</a></li>
+                        <li><a href="#">Métodos de pago</a></li>
+                        <li><a href="#">Envíos y entregas</a></li>
+                        <li><a href="#">Devoluciones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Para Vendedores</h4>
+                    <ul>
+                        <li><a href="#" id="footerSellerLink">Vender en Zonama</a></li>
+                        <li><a href="#">Planes y precios</a></li>
+                        <li><a href="#">Centro de vendedores</a></li>
+                        <li><a href="#">Recursos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Términos y condiciones</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Zonama. Todos los derechos reservados. Hecho con <i class="fas fa-heart"></i> en El Salvador</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
