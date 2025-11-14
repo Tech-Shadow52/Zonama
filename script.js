@@ -360,10 +360,7 @@ class ECommerceApp {
             if (e.key === 'Enter') this.searchProducts();
         });
 
-        // Product type filter
-        document.getElementById('productType').addEventListener('change', (e) => {
-            this.filterProducts(e.target.value);
-        });
+        // Product type filter - removed (now using buttons with onclick)
 
         // Add "Show All" button functionality
         const showAllBtn = document.createElement('button');
@@ -435,15 +432,32 @@ class ECommerceApp {
         const footerSellerLink = document.getElementById('footerSellerLink');
         
         if (sellerBtn) {
-            sellerBtn.addEventListener('click', () => this.showModal('sellerModal'));
+            sellerBtn.addEventListener('click', () => {
+                // If seller is logged in, go to dashboard, otherwise show seller modal
+                if (this.currentSeller) {
+                    this.openSellerDashboard();
+                } else {
+                    this.showModal('sellerModal');
+                }
+            });
         }
         if (heroSellerBtn) {
-            heroSellerBtn.addEventListener('click', () => this.showModal('sellerModal'));
+            heroSellerBtn.addEventListener('click', () => {
+                if (this.currentSeller) {
+                    this.openSellerDashboard();
+                } else {
+                    this.showModal('sellerModal');
+                }
+            });
         }
         if (footerSellerLink) {
             footerSellerLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.showModal('sellerModal');
+                if (this.currentSeller) {
+                    this.openSellerDashboard();
+                } else {
+                    this.showModal('sellerModal');
+                }
             });
         }
 
@@ -610,6 +624,31 @@ class ECommerceApp {
         }
     }
 
+    setupKeyboardNavigation() {
+        // ESC key to close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModals = document.querySelectorAll('.modal[style*="display: block"]');
+                openModals.forEach(modal => {
+                    this.hideModal(modal.id);
+                });
+            }
+        });
+    }
+
+    announceToScreenReader(message) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('role', 'status');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.className = 'sr-only';
+        announcement.textContent = message;
+        document.body.appendChild(announcement);
+        
+        setTimeout(() => {
+            announcement.remove();
+        }, 1000);
+    }
+
     switchAuthTab(tab) {
         // Update tab buttons
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -705,6 +744,9 @@ class ECommerceApp {
                 </div>
             </div>
         `).join('');
+        
+        // Update filter counts
+        this.updateFilterCounts();
     }
 
     searchProducts() {
@@ -723,14 +765,61 @@ class ECommerceApp {
         this.displayProducts(filtered);
     }
 
-    filterProducts(type) {
+    filterByType(type) {
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-filter="${type}"]`).classList.add('active');
+
+        // Filter products
         if (type === 'all') {
             this.displayProducts();
-            return;
+        } else {
+            const filtered = this.products.filter(product => product.type === type);
+            this.displayProducts(filtered);
         }
 
-        const filtered = this.products.filter(product => product.type === type);
-        this.displayProducts(filtered);
+        // Update counts
+        this.updateFilterCounts();
+    }
+
+    sortProducts(sortBy) {
+        let sorted = [...this.products];
+
+        switch(sortBy) {
+            case 'price-low':
+                sorted.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-high':
+                sorted.sort((a, b) => b.price - a.price);
+                break;
+            case 'rating':
+                sorted.sort((a, b) => b.rating - a.rating);
+                break;
+            case 'newest':
+                sorted.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || 0);
+                    const dateB = new Date(b.createdAt || 0);
+                    return dateB - dateA;
+                });
+                break;
+            default: // featured
+                // Keep original order
+                break;
+        }
+
+        this.displayProducts(sorted);
+    }
+
+    updateFilterCounts() {
+        const allCount = this.products.length;
+        const physicalCount = this.products.filter(p => p.type === 'physical').length;
+        const digitalCount = this.products.filter(p => p.type === 'digital').length;
+
+        document.getElementById('countAll').textContent = allCount;
+        document.getElementById('countPhysical').textContent = physicalCount;
+        document.getElementById('countDigital').textContent = digitalCount;
     }
 
     filterByCategory(category) {
@@ -936,7 +1025,8 @@ class ECommerceApp {
             document.getElementById('productDetailImage').src = product.image;
             document.getElementById('productDetailImage').alt = product.title;
             document.getElementById('productDetailTitle').textContent = product.title;
-            document.getElementById('productDetailAuthor').textContent = product.author || product.brand || product.seller || '';
+            const authorText = product.author || product.brand || product.seller || '';
+            document.getElementById('productDetailAuthor').textContent = authorText ? `por ${authorText}` : '';
             document.getElementById('productDetailStars').innerHTML = this.generateStars(product.rating);
             document.getElementById('productDetailRating').textContent = `${product.rating} de 5 estrellas`;
             document.getElementById('productDetailPrice').textContent = `$${product.price}`;
@@ -1146,18 +1236,265 @@ class ECommerceApp {
                 });
             }
         }
+        
+        // Initialize seller system
+        this.initSellerSystem();
+    }
+
+    // ===== SELLER SYSTEM =====
+    
+    initSellerSystem() {
+        this.currentSeller = null;
+        this.sellerProducts = [];
+        
+        // Load seller data from localStorage
+        const savedSeller = localStorage.getItem('zonama_seller');
+        if (savedSeller) {
+            this.currentSeller = JSON.parse(savedSeller);
+        }
+        
+        const savedProducts = localStorage.getItem('zonama_seller_products');
+        if (savedProducts) {
+            this.sellerProducts = JSON.parse(savedProducts);
+            // Add seller products to main products array
+            this.products = [...this.products, ...this.sellerProducts];
+        }
+        
+        // Setup form handlers
+        this.setupSellerForms();
+    }
+
+    setupSellerForms() {
+        // Seller Registration Form
+        const regForm = document.getElementById('sellerRegistrationForm');
+        if (regForm) {
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleSellerRegistration();
+            });
+        }
+
+        // Add Product Form
+        const productForm = document.getElementById('addProductForm');
+        if (productForm) {
+            productForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleAddProduct();
+            });
+        }
+    }
+
+    openSellerRegistration() {
+        this.hideModal('sellerModal');
+        this.showModal('sellerRegistrationModal');
+    }
+
+    handleSellerRegistration() {
+        const seller = {
+            name: document.getElementById('sellerName').value,
+            email: document.getElementById('sellerEmail').value,
+            phone: document.getElementById('sellerPhone').value,
+            storeName: document.getElementById('storeName').value,
+            category: document.getElementById('storeCategory').value,
+            department: document.getElementById('storeDepartment').value,
+            description: document.getElementById('storeDescription').value,
+            plan: document.querySelector('input[name="sellerPlan"]:checked').value,
+            createdAt: new Date().toISOString(),
+            totalSales: 0,
+            totalRevenue: 0
+        };
+
+        // Save seller data
+        this.currentSeller = seller;
+        localStorage.setItem('zonama_seller', JSON.stringify(seller));
+
+        // Show success message
+        this.showNotification('¡Tienda creada exitosamente! Bienvenido a Zonama', 'success');
+
+        // Close registration and open dashboard
+        this.hideModal('sellerRegistrationModal');
+        setTimeout(() => {
+            this.openSellerDashboard();
+        }, 500);
+    }
+
+    openSellerDashboard() {
+        if (!this.currentSeller) {
+            this.showNotification('Debes registrarte como vendedor primero', 'warning');
+            this.openSellerRegistration();
+            return;
+        }
+
+        // Update dashboard stats
+        document.getElementById('totalProducts').textContent = this.sellerProducts.length;
+        document.getElementById('totalSales').textContent = this.currentSeller.totalSales || 0;
+        document.getElementById('totalRevenue').textContent = `$${(this.currentSeller.totalRevenue || 0).toFixed(2)}`;
+
+        // Display products
+        this.displaySellerProducts();
+
+        this.showModal('sellerDashboardModal');
+    }
+
+    displaySellerProducts() {
+        const container = document.getElementById('sellerProductsList');
+        
+        if (this.sellerProducts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>Aún no tienes productos</p>
+                    <button class="btn-add-first" onclick="app.openAddProduct()">Agregar mi primer producto</button>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = this.sellerProducts.map(product => `
+            <div class="product-item">
+                <img src="${product.image}" alt="${product.title}" class="product-item-image">
+                <div class="product-item-info">
+                    <div class="product-item-title">${product.title}</div>
+                    <div class="product-item-price">$${product.price}</div>
+                    <div class="product-item-stock">Stock: ${product.stock} unidades</div>
+                </div>
+                <div class="product-item-actions">
+                    <button class="btn-edit-product" onclick="app.editProduct(${product.id})">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn-delete-product" onclick="app.deleteProduct(${product.id})">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    openAddProduct() {
+        if (!this.currentSeller) {
+            this.showNotification('Debes registrarte como vendedor primero', 'warning');
+            return;
+        }
+        this.showModal('addProductModal');
+    }
+
+    closeAddProduct() {
+        this.hideModal('addProductModal');
+        document.getElementById('addProductForm').reset();
+    }
+
+    handleAddProduct() {
+        const newProduct = {
+            id: Date.now(),
+            title: document.getElementById('productTitle').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            category: document.getElementById('productCategory').value,
+            type: document.getElementById('productType').value,
+            stock: parseInt(document.getElementById('productStock').value),
+            description: document.getElementById('productDescription').value,
+            image: document.getElementById('productImage').value,
+            specs: document.getElementById('productSpecs').value || 'Ver descripción',
+            seller: this.currentSeller.storeName,
+            location: this.getDepartmentName(this.currentSeller.department),
+            brand: this.currentSeller.storeName,
+            available: true,
+            rating: 5.0,
+            createdAt: new Date().toISOString()
+        };
+
+        // Add to seller products
+        this.sellerProducts.push(newProduct);
+        
+        // Add to main products array
+        this.products.push(newProduct);
+
+        // Save to localStorage
+        localStorage.setItem('zonama_seller_products', JSON.stringify(this.sellerProducts));
+
+        // Show success message
+        this.showNotification('Producto agregado exitosamente', 'success');
+
+        // Close modal and refresh dashboard
+        this.closeAddProduct();
+        this.displaySellerProducts();
+        this.displayProducts(); // Refresh main products display
+
+        // Update stats
+        document.getElementById('totalProducts').textContent = this.sellerProducts.length;
+    }
+
+    editProduct(productId) {
+        this.showNotification('Función de edición en desarrollo', 'warning');
+    }
+
+    deleteProduct(productId) {
+        if (!confirm('¿Estás seguro de eliminar este producto?')) {
+            return;
+        }
+
+        // Remove from seller products
+        this.sellerProducts = this.sellerProducts.filter(p => p.id !== productId);
+        
+        // Remove from main products
+        this.products = this.products.filter(p => p.id !== productId);
+
+        // Save to localStorage
+        localStorage.setItem('zonama_seller_products', JSON.stringify(this.sellerProducts));
+
+        // Show success message
+        this.showNotification('Producto eliminado', 'success');
+
+        // Refresh displays
+        this.displaySellerProducts();
+        this.displayProducts();
+
+        // Update stats
+        document.getElementById('totalProducts').textContent = this.sellerProducts.length;
+    }
+
+    logoutSeller() {
+        if (!confirm('¿Estás seguro de cerrar sesión?')) {
+            return;
+        }
+
+        this.currentSeller = null;
+        localStorage.removeItem('zonama_seller');
+        
+        this.hideModal('sellerDashboardModal');
+        this.showNotification('Sesión cerrada', 'success');
+    }
+
+    getDepartmentName(code) {
+        const departments = {
+            'san-salvador': 'San Salvador',
+            'la-libertad': 'La Libertad',
+            'santa-ana': 'Santa Ana',
+            'san-miguel': 'San Miguel',
+            'usulutan': 'Usulután',
+            'la-paz': 'La Paz',
+            'sonsonate': 'Sonsonate',
+            'chalatenango': 'Chalatenango',
+            'la-union': 'La Unión',
+            'ahuachapan': 'Ahuachapán',
+            'cabanas': 'Cabañas',
+            'cuscatlan': 'Cuscatlán',
+            'morazan': 'Morazán',
+            'san-vicente': 'San Vicente'
+        };
+        return departments[code] || 'El Salvador';
     }
 }
 
-// Initialize the application
-const app = new ECommerceApp();
-
-// Global function for product details
+// Global function for product details (must be defined before app initialization)
 window.showProductDetail = function(productId) {
-    if (app && app.showProductDetail) {
-        app.showProductDetail(productId);
+    if (window.app && window.app.showProductDetail) {
+        window.app.showProductDetail(productId);
     }
 };
+
+// Initialize the application
+const app = new ECommerceApp();
+window.app = app; // Make app globally accessible
 
 // Enhanced initialization
 document.addEventListener('DOMContentLoaded', function() {

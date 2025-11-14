@@ -152,80 +152,403 @@
             </div>
         </div>
 
-        <!-- Seller Modal -->
-        <div id="sellerModal" class="modal" role="dialog" aria-label="Planes para vendedores" aria-modal="true">
+        <!-- Seller Modal - Professional Style -->
+        <div id="sellerModal" class="modal" role="dialog" aria-label="Vender en Zonama" aria-modal="true">
             <div class="modal-content seller-modal">
-                <span class="close" aria-label="Cerrar planes">&times;</span>
+                <span class="close" aria-label="Cerrar">&times;</span>
                 <div class="seller-container">
-                    <h2>Vende en Zonama</h2>
-                    <p class="seller-subtitle">Únete a cientos de vendedores locales y haz crecer tu negocio</p>
+                    <!-- Hero Section -->
+                    <div class="seller-hero">
+                        <h1>Vende en Zonama</h1>
+                        <p class="seller-tagline">El marketplace que conecta a vendedores salvadoreños con miles de compradores</p>
+                        <div class="seller-stats">
+                            <div class="stat-item">
+                                <strong>500+</strong>
+                                <span>Vendedores activos</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>10,000+</strong>
+                                <span>Compradores mensuales</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>$50K+</strong>
+                                <span>Ventas mensuales</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Why Sell Section -->
+                    <div class="why-sell-section">
+                        <h2>¿Por qué vender en Zonama?</h2>
+                        <div class="why-sell-grid">
+                            <div class="why-sell-card">
+                                <div class="icon-circle">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <h3>Fácil de empezar</h3>
+                                <p>Crea tu tienda en minutos. Sin costos iniciales ni complicaciones técnicas.</p>
+                            </div>
+                            <div class="why-sell-card">
+                                <div class="icon-circle">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3>Audiencia local</h3>
+                                <p>Accede a miles de compradores salvadoreños buscando productos como los tuyos.</p>
+                            </div>
+                            <div class="why-sell-card">
+                                <div class="icon-circle">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <h3>Logística integrada</h3>
+                                <p>Alianzas con empresas de envío para entregas rápidas en todo El Salvador.</p>
+                            </div>
+                            <div class="why-sell-card">
+                                <div class="icon-circle">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <h3>Pagos seguros</h3>
+                                <p>Recibe tus pagos de forma segura y rápida. Múltiples métodos de pago disponibles.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plans Section -->
+                    <div class="plans-section">
+                        <h2>Elige el plan perfecto para tu negocio</h2>
+                        <p class="plans-subtitle">Comienza gratis y crece a tu ritmo</p>
+                        
+                        <div class="seller-plans">
+                            <!-- Plan Básico -->
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h3>Plan Básico</h3>
+                                    <div class="plan-price">
+                                        <span class="price-amount">$0</span>
+                                        <span class="price-period">/mes</span>
+                                    </div>
+                                    <p class="plan-description">Perfecto para empezar</p>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check-circle"></i> Hasta 10 productos</li>
+                                    <li><i class="fas fa-check-circle"></i> Comisión del 8% por venta</li>
+                                    <li><i class="fas fa-check-circle"></i> Soporte por email</li>
+                                    <li><i class="fas fa-check-circle"></i> Panel de ventas básico</li>
+                                    <li><i class="fas fa-check-circle"></i> Listado en búsquedas</li>
+                                </ul>
+                                <button class="btn-plan btn-plan-basic">Comenzar Gratis</button>
+                            </div>
+
+                            <!-- Plan Profesional -->
+                            <div class="plan-card plan-featured">
+                                <div class="plan-badge">Más Popular</div>
+                                <div class="plan-header">
+                                    <h3>Plan Profesional</h3>
+                                    <div class="plan-price">
+                                        <span class="price-amount">$15</span>
+                                        <span class="price-period">/mes</span>
+                                    </div>
+                                    <p class="plan-description">Para negocios en crecimiento</p>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check-circle"></i> Productos ilimitados</li>
+                                    <li><i class="fas fa-check-circle"></i> Comisión del 5% por venta</li>
+                                    <li><i class="fas fa-check-circle"></i> Soporte prioritario 24/7</li>
+                                    <li><i class="fas fa-check-circle"></i> Análisis y reportes avanzados</li>
+                                    <li><i class="fas fa-check-circle"></i> Destacado en búsquedas</li>
+                                    <li><i class="fas fa-check-circle"></i> Promociones especiales</li>
+                                    <li><i class="fas fa-check-circle"></i> Badge de vendedor verificado</li>
+                                </ul>
+                                <button class="btn-plan btn-plan-pro">Elegir Plan Profesional</button>
+                            </div>
+
+                            <!-- Plan Empresarial -->
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h3>Plan Empresarial</h3>
+                                    <div class="plan-price">
+                                        <span class="price-amount">$40</span>
+                                        <span class="price-period">/mes</span>
+                                    </div>
+                                    <p class="plan-description">Para grandes volúmenes</p>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check-circle"></i> Todo del Plan Profesional</li>
+                                    <li><i class="fas fa-check-circle"></i> Comisión del 3% por venta</li>
+                                    <li><i class="fas fa-check-circle"></i> Gerente de cuenta dedicado</li>
+                                    <li><i class="fas fa-check-circle"></i> Publicidad destacada</li>
+                                    <li><i class="fas fa-check-circle"></i> API personalizada</li>
+                                    <li><i class="fas fa-check-circle"></i> Reportes personalizados</li>
+                                    <li><i class="fas fa-check-circle"></i> Integración con tu sistema</li>
+                                </ul>
+                                <button class="btn-plan btn-plan-enterprise">Contactar Ventas</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Success Stories -->
+                    <div class="success-section">
+                        <h2>Historias de éxito</h2>
+                        <div class="success-grid">
+                            <div class="success-card">
+                                <div class="quote-icon">"</div>
+                                <p>"Zonama me ayudó a llevar mi negocio de pupusas al siguiente nivel. Ahora vendo en todo San Salvador."</p>
+                                <div class="success-author">
+                                    <strong>María González</strong>
+                                    <span>Pupusería Doña María</span>
+                                </div>
+                            </div>
+                            <div class="success-card">
+                                <div class="quote-icon">"</div>
+                                <p>"Como artesano de Ilobasco, Zonama me conectó con clientes que valoran el trabajo hecho a mano."</p>
+                                <div class="success-author">
+                                    <strong>Carlos Martínez</strong>
+                                    <span>Artesanías El Barro</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Section -->
+                    <div class="seller-cta">
+                        <h2>¿Listo para empezar a vender?</h2>
+                        <p>Únete a cientos de vendedores salvadoreños que ya confían en Zonama</p>
+                        <button class="btn-cta-large" onclick="app.openSellerRegistration()">Crear mi tienda gratis</button>
+                        <p class="cta-note">Sin tarjeta de crédito requerida • Configuración en 5 minutos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seller Registration Modal -->
+        <div id="sellerRegistrationModal" class="modal" role="dialog" aria-label="Registro de vendedor" aria-modal="true">
+            <div class="modal-content seller-registration-modal">
+                <span class="close" aria-label="Cerrar">&times;</span>
+                <div class="registration-container">
+                    <h2>Crea tu tienda en Zonama</h2>
+                    <p class="registration-subtitle">Completa tu información para empezar a vender</p>
                     
-                    <div class="seller-plans">
-                        <div class="plan-card">
-                            <div class="plan-badge">Gratis</div>
-                            <h3>Plan Básico</h3>
-                            <div class="plan-price">$0<span>/mes</span></div>
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Hasta 10 productos</li>
-                                <li><i class="fas fa-check"></i> Comisión del 8% por venta</li>
-                                <li><i class="fas fa-check"></i> Soporte por email</li>
-                                <li><i class="fas fa-check"></i> Panel básico de ventas</li>
-                            </ul>
-                            <button class="btn-plan">Comenzar Gratis</button>
+                    <form id="sellerRegistrationForm" class="seller-form">
+                        <div class="form-section">
+                            <h3>Información Personal</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="sellerName">Nombre completo *</label>
+                                    <input type="text" id="sellerName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sellerEmail">Email *</label>
+                                    <input type="email" id="sellerEmail" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="sellerPhone">Teléfono *</label>
+                                    <input type="tel" id="sellerPhone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sellerPassword">Contraseña *</label>
+                                    <input type="password" id="sellerPassword" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="plan-card featured">
-                            <div class="plan-badge popular">Más Popular</div>
-                            <h3>Plan Profesional</h3>
-                            <div class="plan-price">$15<span>/mes</span></div>
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Productos ilimitados</li>
-                                <li><i class="fas fa-check"></i> Comisión del 5% por venta</li>
-                                <li><i class="fas fa-check"></i> Soporte prioritario</li>
-                                <li><i class="fas fa-check"></i> Análisis avanzados</li>
-                                <li><i class="fas fa-check"></i> Destacado en búsquedas</li>
-                                <li><i class="fas fa-check"></i> Promociones especiales</li>
-                            </ul>
-                            <button class="btn-plan primary">Elegir Plan</button>
+                        <div class="form-section">
+                            <h3>Información del Negocio</h3>
+                            <div class="form-group">
+                                <label for="storeName">Nombre de tu tienda *</label>
+                                <input type="text" id="storeName" required placeholder="Ej: Pupusería Doña María">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="storeCategory">Categoría principal *</label>
+                                    <select id="storeCategory" required>
+                                        <option value="">Selecciona una categoría</option>
+                                        <option value="food">Comida Local</option>
+                                        <option value="crafts">Artesanías</option>
+                                        <option value="clothing">Ropa</option>
+                                        <option value="electronics">Electrónicos</option>
+                                        <option value="home">Hogar</option>
+                                        <option value="books">Libros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="storeDepartment">Departamento *</label>
+                                    <select id="storeDepartment" required>
+                                        <option value="">Selecciona tu departamento</option>
+                                        <option value="san-salvador">San Salvador</option>
+                                        <option value="la-libertad">La Libertad</option>
+                                        <option value="santa-ana">Santa Ana</option>
+                                        <option value="san-miguel">San Miguel</option>
+                                        <option value="usulutan">Usulután</option>
+                                        <option value="la-paz">La Paz</option>
+                                        <option value="sonsonate">Sonsonate</option>
+                                        <option value="chalatenango">Chalatenango</option>
+                                        <option value="la-union">La Unión</option>
+                                        <option value="ahuachapan">Ahuachapán</option>
+                                        <option value="cabanas">Cabañas</option>
+                                        <option value="cuscatlan">Cuscatlán</option>
+                                        <option value="morazan">Morazán</option>
+                                        <option value="san-vicente">San Vicente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="storeDescription">Descripción de tu negocio *</label>
+                                <textarea id="storeDescription" rows="3" required placeholder="Cuéntanos sobre tu negocio..."></textarea>
+                            </div>
                         </div>
 
-                        <div class="plan-card">
-                            <div class="plan-badge">Premium</div>
-                            <h3>Plan Empresarial</h3>
-                            <div class="plan-price">$40<span>/mes</span></div>
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Todo del Plan Profesional</li>
-                                <li><i class="fas fa-check"></i> Comisión del 3% por venta</li>
-                                <li><i class="fas fa-check"></i> Gerente de cuenta dedicado</li>
-                                <li><i class="fas fa-check"></i> Publicidad destacada</li>
-                                <li><i class="fas fa-check"></i> API personalizada</li>
-                                <li><i class="fas fa-check"></i> Reportes personalizados</li>
-                            </ul>
-                            <button class="btn-plan">Contactar Ventas</button>
+                        <div class="form-section">
+                            <h3>Plan de Vendedor</h3>
+                            <div class="plan-selector">
+                                <label class="plan-option">
+                                    <input type="radio" name="sellerPlan" value="basic" checked>
+                                    <div class="plan-option-content">
+                                        <strong>Plan Básico - Gratis</strong>
+                                        <span>Hasta 10 productos • Comisión 8%</span>
+                                    </div>
+                                </label>
+                                <label class="plan-option">
+                                    <input type="radio" name="sellerPlan" value="professional">
+                                    <div class="plan-option-content">
+                                        <strong>Plan Profesional - $15/mes</strong>
+                                        <span>Productos ilimitados • Comisión 5%</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit-seller">Crear mi tienda</button>
+                            <p class="form-note">Al registrarte, aceptas nuestros <a href="#">Términos y Condiciones</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seller Dashboard Modal -->
+        <div id="sellerDashboardModal" class="modal" role="dialog" aria-label="Panel de vendedor" aria-modal="true">
+            <div class="modal-content seller-dashboard-modal">
+                <span class="close" aria-label="Cerrar">&times;</span>
+                <div class="dashboard-container">
+                    <div class="dashboard-header">
+                        <h1>Mi Tienda</h1>
+                        <div class="dashboard-actions">
+                            <button class="btn-add-product" onclick="app.openAddProduct()">
+                                <i class="fas fa-plus"></i> Agregar Producto
+                            </button>
+                            <button class="btn-logout" onclick="app.logoutSeller()">
+                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                            </button>
                         </div>
                     </div>
 
-                    <div class="seller-benefits">
-                        <h3>Beneficios de vender en Zonama</h3>
-                        <div class="seller-benefits-grid">
-                            <div class="seller-benefit">
-                                <i class="fas fa-chart-line"></i>
-                                <p>Aumenta tus ventas con nuestra audiencia creciente</p>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <strong id="totalProducts">0</strong>
+                                <span>Productos</span>
                             </div>
-                            <div class="seller-benefit">
-                                <i class="fas fa-truck"></i>
-                                <p>Logística simplificada con nuestros socios de envío</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-shopping-cart"></i>
+                            <div>
+                                <strong id="totalSales">0</strong>
+                                <span>Ventas</span>
                             </div>
-                            <div class="seller-benefit">
-                                <i class="fas fa-mobile-alt"></i>
-                                <p>Gestiona tu tienda desde cualquier dispositivo</p>
-                            </div>
-                            <div class="seller-benefit">
-                                <i class="fas fa-dollar-sign"></i>
-                                <p>Pagos seguros y rápidos directamente a tu cuenta</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div>
+                                <strong id="totalRevenue">$0</strong>
+                                <span>Ingresos</span>
                             </div>
                         </div>
                     </div>
+
+                    <div class="dashboard-content">
+                        <h2>Mis Productos</h2>
+                        <div id="sellerProductsList" class="seller-products-list">
+                            <div class="empty-state">
+                                <i class="fas fa-box-open"></i>
+                                <p>Aún no tienes productos</p>
+                                <button class="btn-add-first" onclick="app.openAddProduct()">Agregar mi primer producto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Product Modal -->
+        <div id="addProductModal" class="modal" role="dialog" aria-label="Agregar producto" aria-modal="true">
+            <div class="modal-content add-product-modal">
+                <span class="close" aria-label="Cerrar">&times;</span>
+                <div class="add-product-container">
+                    <h2>Agregar Nuevo Producto</h2>
+                    
+                    <form id="addProductForm" class="product-form">
+                        <div class="form-group">
+                            <label for="productTitle">Nombre del producto *</label>
+                            <input type="text" id="productTitle" required placeholder="Ej: Pupusas de queso (12 unidades)">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productPrice">Precio (USD) *</label>
+                                <input type="number" id="productPrice" step="0.01" min="0" required placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Categoría *</label>
+                                <select id="productCategory" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="food">Comida Local</option>
+                                    <option value="crafts">Artesanías</option>
+                                    <option value="clothing">Ropa</option>
+                                    <option value="electronics">Electrónicos</option>
+                                    <option value="home">Hogar</option>
+                                    <option value="books">Libros</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productType">Tipo *</label>
+                                <select id="productType" required>
+                                    <option value="physical">Producto Físico</option>
+                                    <option value="digital">Producto Digital</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="productStock">Stock disponible *</label>
+                                <input type="number" id="productStock" min="0" required placeholder="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productDescription">Descripción *</label>
+                            <textarea id="productDescription" rows="4" required placeholder="Describe tu producto..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImage">URL de la imagen *</label>
+                            <input type="url" id="productImage" required placeholder="https://ejemplo.com/imagen.jpg">
+                            <small>Ingresa la URL de una imagen de tu producto</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productSpecs">Especificaciones (opcional)</label>
+                            <input type="text" id="productSpecs" placeholder="Ej: 100% algodón, Hecho a mano">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="app.closeAddProduct()">Cancelar</button>
+                            <button type="submit" class="btn-submit-product">Publicar Producto</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -268,12 +591,37 @@
             <div class="container">
                 <div class="products-header">
                     <h2>Productos</h2>
-                    <div class="filter-controls">
-                        <select id="productType">
-                            <option value="all">Todos los productos</option>
-                            <option value="physical">Productos físicos</option>
-                            <option value="digital">Productos digitales</option>
-                        </select>
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label class="filter-label">Tipo de producto:</label>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all" onclick="app.filterByType('all')">
+                                    <i class="fas fa-th"></i>
+                                    <span>Todos</span>
+                                    <span class="filter-count" id="countAll">0</span>
+                                </button>
+                                <button class="filter-btn" data-filter="physical" onclick="app.filterByType('physical')">
+                                    <i class="fas fa-box"></i>
+                                    <span>Físicos</span>
+                                    <span class="filter-count" id="countPhysical">0</span>
+                                </button>
+                                <button class="filter-btn" data-filter="digital" onclick="app.filterByType('digital')">
+                                    <i class="fas fa-download"></i>
+                                    <span>Digitales</span>
+                                    <span class="filter-count" id="countDigital">0</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="sort-group">
+                            <label class="filter-label">Ordenar por:</label>
+                            <select id="sortBy" class="sort-select" onchange="app.sortProducts(this.value)">
+                                <option value="featured">Destacados</option>
+                                <option value="price-low">Precio: Menor a Mayor</option>
+                                <option value="price-high">Precio: Mayor a Menor</option>
+                                <option value="rating">Mejor Calificación</option>
+                                <option value="newest">Más Recientes</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div id="productsGrid" class="products-grid">
@@ -308,36 +656,150 @@
             </div>
         </div>
 
-        <!-- Product Detail Modal -->
+        <!-- Product Detail Modal - Amazon Style -->
         <div id="productModal" class="modal" role="dialog" aria-label="Detalles del producto" aria-modal="true">
             <div class="modal-content product-detail-modal">
                 <span class="close" aria-label="Cerrar detalles del producto">&times;</span>
                 <div class="product-detail-container">
-                    <div class="product-detail-image">
-                        <img id="productDetailImage" src="" alt="" role="button" tabindex="0" aria-label="Haz clic para ver imagen completa">
+                    <!-- Left Column - Image -->
+                    <div class="product-detail-left">
+                        <div class="product-image-main">
+                            <img id="productDetailImage" src="" alt="" role="button" tabindex="0" aria-label="Haz clic para ver imagen completa">
+                            <div class="zoom-hint">
+                                <i class="fas fa-search-plus"></i> Click para ampliar
+                            </div>
+                        </div>
                     </div>
-                    <div class="product-detail-info">
-                        <h2 id="productDetailTitle"></h2>
-                        <p class="product-detail-author">by <span id="productDetailAuthor"></span></p>
-                        <div class="product-detail-rating">
-                            <div class="stars" id="productDetailStars"></div>
-                            <span id="productDetailRating"></span>
+
+                    <!-- Middle Column - Info -->
+                    <div class="product-detail-middle">
+                        <h1 id="productDetailTitle" class="product-title-main"></h1>
+                        
+                        <div class="product-brand-line">
+                            <span class="brand-label">Marca:</span>
+                            <span id="productDetailAuthor" class="brand-name"></span>
                         </div>
-                        <div class="product-detail-price" id="productDetailPrice"></div>
-                        <div class="product-detail-meta">
-                            <p><strong>Especificaciones:</strong> <span id="productDetailPages"></span></p>
-                            <p><strong>Marca/Editorial:</strong> <span id="productDetailPublisher"></span></p>
-                            <p><strong>Categoría:</strong> <span id="productDetailGenre"></span></p>
-                            <p><strong>Vendedor:</strong> <span id="productDetailISBN"></span></p>
-                            <p><strong>Tipo:</strong> <span id="productDetailType"></span></p>
-                            <p><strong>Ubicación:</strong> <span id="productDetailLocation"></span></p>
+
+                        <div class="product-rating-line">
+                            <div class="stars-large" id="productDetailStars"></div>
+                            <span id="productDetailRating" class="rating-text"></span>
+                            <span class="rating-count">(Ver opiniones)</span>
                         </div>
-                        <div class="product-detail-description">
-                            <h3>Descripción</h3>
-                            <p id="productDetailDescription"></p>
+
+                        <div class="divider"></div>
+
+                        <div class="product-price-box">
+                            <div class="price-label">Precio:</div>
+                            <div id="productDetailPrice" class="price-main"></div>
+                            <div class="price-shipping">Envío GRATIS en pedidos mayores a $25</div>
                         </div>
-                        <div class="product-detail-actions">
-                            <button id="productDetailAddToCart" class="btn-primary">Agregar al Carrito</button>
+
+                        <div class="divider"></div>
+
+                        <div class="product-about">
+                            <h3>Acerca de este producto</h3>
+                            <p id="productDetailDescription" class="product-description-text"></p>
+                        </div>
+
+                        <div class="product-specs">
+                            <h3>Especificaciones del producto</h3>
+                            <table class="specs-table">
+                                <tr>
+                                    <td class="spec-label">Especificaciones</td>
+                                    <td id="productDetailPages" class="spec-value"></td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-label">Marca/Editorial</td>
+                                    <td id="productDetailPublisher" class="spec-value"></td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-label">Categoría</td>
+                                    <td id="productDetailGenre" class="spec-value"></td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-label">Vendedor</td>
+                                    <td id="productDetailISBN" class="spec-value"></td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-label">Tipo</td>
+                                    <td id="productDetailType" class="spec-value"></td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-label">Ubicación</td>
+                                    <td id="productDetailLocation" class="spec-value"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Buy Box -->
+                    <div class="product-detail-right">
+                        <div class="buy-box">
+                            <div id="productDetailPriceBox" class="buy-box-price"></div>
+                            
+                            <div class="stock-status" id="stockStatus">
+                                <i class="fas fa-check-circle"></i> En stock
+                            </div>
+
+                            <div class="delivery-info">
+                                <div class="delivery-line">
+                                    <i class="fas fa-truck"></i>
+                                    <div>
+                                        <strong>Envío GRATIS</strong>
+                                        <div class="delivery-date">Llega el <strong>Lunes, 18 Nov</strong></div>
+                                    </div>
+                                </div>
+                                <div class="delivery-line">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <span>Enviar a</span>
+                                        <strong id="deliveryLocation">San Salvador</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quantity-selector">
+                                <label for="quantity">Cantidad:</label>
+                                <select id="quantity" class="quantity-select">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10+</option>
+                                </select>
+                            </div>
+
+                            <button id="productDetailAddToCart" class="btn-add-to-cart">
+                                <i class="fas fa-shopping-cart"></i> Agregar al carrito
+                            </button>
+
+                            <button class="btn-buy-now">
+                                <i class="fas fa-bolt"></i> Comprar ahora
+                            </button>
+
+                            <div class="secure-transaction">
+                                <i class="fas fa-lock"></i> Transacción segura
+                            </div>
+
+                            <div class="seller-info">
+                                <div class="seller-line">
+                                    <span>Vendido por:</span>
+                                    <strong id="sellerName">Zonama</strong>
+                                </div>
+                                <div class="seller-line">
+                                    <span>Envío desde:</span>
+                                    <strong id="shipFrom">El Salvador</strong>
+                                </div>
+                            </div>
+
+                            <div class="return-policy">
+                                <i class="fas fa-undo"></i> Devoluciones gratuitas en 30 días
+                            </div>
                         </div>
                     </div>
                 </div>
